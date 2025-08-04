@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thota Bharadwaj - Cybersecurity Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Roboto Font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Poppins for Google-style font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #e2e8f0; /* Light grey text */
+            overflow-x: hidden; /* Prevent horizontal scrollbar from animations */
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #6d28d9; /* Purple */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7c3aed; /* Lighter purple */
+        }
+        .text-gradient-purple-blue {
+            background-image: linear-gradient(to right, #8b5cf6, #3b82f6); /* Purple to Blue */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-primary {
+            background-image: linear-gradient(to right, #8b5cf6, #6b21a8); /* Purple gradient */
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-image: linear-gradient(to right, #7c3aed, #581c87);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+        }
+        .card {
+            background-color: rgba(30, 41, 59, 0.7); /* Semi-transparent dark blue-grey for cards */
+            border: 1px solid rgba(51, 65, 85, 0.5); /* Medium grey border */
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            border-color: #8b5cf6; /* Purple hover border */
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.2);
+        }
+        .skill-bar-bg {
+            background-color: #334155; /* Grey for skill bar background */
+        }
+        .skill-bar-fill {
+            background-color: #3b82f6; /* Blue for skill bar fill */
+            transition: width 1s ease-out;
+        }
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: #1e293b;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            animation: fadeInScale 0.3s ease-out;
+        }
+        .modal-close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #e2e8f0;
+            cursor: pointer;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #8b5cf6;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Animated Background Styles */
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: #0f172a; /* Set base background color */
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px); /* Creates the soft glow effect */
+            opacity: 0.6;
+            animation: float-and-pulsate 10s infinite alternate ease-in-out;
+        }
+        .blob.purple { background: #8b5cf6; }
+        .blob.magenta { background: #d946ef; }
+        .blob.red { background: #ef4444; }
+        .blob.orange { background: #f97316; }
+
+        .blob-1 { top: 10%; left: 15%; width: 300px; height: 300px; animation-delay: 0s; animation-duration: 15s; }
+        .blob-2 { top: 40%; right: 20%; width: 250px; height: 250px; animation-delay: 2s; animation-duration: 12s; }
+        .blob-3 { bottom: 10%; left: 30%; width: 350px; height: 350px; animation-delay: 4s; animation-duration: 18s; }
+        .blob-4 { top: 20%; right: 50%; width: 200px; height: 200px; animation-delay: 6s; animation-duration: 10s; }
+        .blob-5 { bottom: 30%; right: 5%; width: 400px; height: 400px; animation-delay: 8s; animation-duration: 20s; }
+        .blob-6 { top: 60%; left: 5%; width: 150px; height: 150px; animation-delay: 10s; animation-duration: 14s; }
+
+        @keyframes float-and-pulsate {
+            0% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(20px, -40px) scale(1.05); }
+            50% { transform: translate(-30px, 50px) scale(0.95); }
+            75% { transform: translate(10px, 30px) scale(1.1); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+        
+        /* Typing Animation Styles */
+        .typing-container {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0;
+            border-right: 3px solid transparent; /* Blinking cursor */
+            animation: typing 3s steps(20, end) forwards, blinking-cursor 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blinking-cursor {
+            from, to { border-color: transparent; }
+            50% { border-color: #8b5cf6; } /* Purple blinking cursor */
+        }
+
+        /* Adjustments for the typing text */
+        .typing-text-container {
+            display: inline-block;
+        }
+
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+    <!-- Animated Background Blobs -->
+    <div class="animated-background">
+        <div class="blob purple blob-1"></div>
+        <div class="blob magenta blob-2"></div>
+        <div class="blob red blob-3"></div>
+        <div class="blob orange blob-4"></div>
+        <div class="blob purple blob-5"></div>
+        <div class="blob red blob-6"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-md py-4 shadow-lg fixed w-full z-50">
+        <nav class="container mx-auto flex justify-between items-center px-4">
+            <a href="#" class="text-2xl font-bold text-gradient-purple-blue rounded-md p-2">Thota Bharadwaj</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="#home" class="text-gray-300 hover:text-purple-400 transition-colors duration-300">Home</a>
+                <a href="#about" class="text-gray-300 hover:text-purple-400 transition-colors duration-300">About</a>
+                <a href="#skills" class="text-gray-300 hover:text-purple-400 transition-colors duration-300">Skills</a>
+                <a href="#certifications" class="text-gray-300 hover:text-purple-400 transition-colors duration-300">Certifications</a>
+                <a href="#contact" class="text-gray-300 hover:text-purple-400 transition-colors duration-300">Contact</a>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-300 focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </nav>
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden md:hidden fixed inset-0 bg-gray-900 bg-opacity-95 z-40 flex flex-col items-center justify-center space-y-8 text-xl">
+            <button id="close-mobile-menu" class="absolute top-4 right-4 text-gray-300 focus:outline-none">
+                <i class="fas fa-times text-3xl"></i>
+            </button>
+            <a href="#home" class="text-gray-300 hover:text-purple-400 transition-colors duration-300" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Home</a>
+            <a href="#about" class="text-gray-300 hover:text-purple-400 transition-colors duration-300" onclick="document.getElementById('mobile-menu').classList.add('hidden')">About</a>
+            <a href="#skills" class="text-gray-300 hover:text-purple-400 transition-colors duration-300" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Skills</a>
+            <a href="#certifications" class="text-gray-300 hover:text-purple-400 transition-colors duration-300" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Certifications</a>
+            <a href="#contact" class="text-gray-300 hover:text-purple-400 transition-colors duration-300" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Contact</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-20">
+        <!-- Hero Section -->
+        <section id="home" class="relative h-screen flex items-center justify-center bg-transparent overflow-hidden">
+            <div class="text-center z-10 p-6 md:p-8 rounded-xl shadow-lg bg-gray-900 bg-opacity-70 backdrop-filter backdrop-blur-sm mx-4">
+                <p class="text-lg md:text-xl text-gray-300 mb-2 animate-fadeInUp">Hello, I'm</p>
+
+                <!-- Typing Animation Container -->
+                <div class="relative w-full max-w-4xl mx-auto mb-8 animate-fadeInUp">
+                    <div class="typing-text-container">
+                        <h1 class="text-5xl md:text-8xl font-bold text-transparent text-gradient-purple-blue typing-container">
+                          Thota Bharadwaj
+                        </h1>
+                    </div>
+                </div>
+
+                <p class="text-xl md:text-3xl text-gray-300 mt-4 mb-8 animate-fadeInUp delay-500">A passionate <span class="font-semibold text-blue-400">Cybersecurity Student</span></p>
+                
+                <div class="flex items-center justify-center space-x-4">
+                    <a href="#contact" class="btn-primary text-white font-semibold py-3 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all duration-300 animate-fadeInUp delay-800">
+                        Get In Touch <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-16 md:py-24">
+            <div class="container mx-auto px-4 bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-md p-8 rounded-lg shadow-lg border border-gray-700">
+                <h2 class="text-4xl font-bold text-center mb-12 text-gradient-purple-blue">About Me</h2>
+                <div class="flex flex-col md:flex-row items-center md:space-x-12">
+                    <div class="md:w-1/3 mb-8 md:mb-0">
+                        <img src="IMG_20250612_143922.jpg" alt="Thota Bharadwaj" class="rounded-full w-64 h-64 md:w-80 md:h-80 object-cover mx-auto border-4 border-purple-500 shadow-lg">
+                    </div>
+                    <div class="md:w-2/3 text-lg leading-relaxed text-gray-300 text-center md:text-left">
+                        <p class="mb-4">
+                            Hi, I'm Thota Bharadwaj, a dedicated cybersecurity student with a strong passion for digital security and protecting information systems. I am constantly expanding my knowledge in various domains of cybersecurity, including network security, ethical hacking, incident response, and secure coding practices.
+                        </p>
+                        <p class="mb-4">
+                            My academic journey has equipped me with foundational knowledge, and I actively seek practical experience through labs, personal projects, and competitive CTF challenges. I am driven by the desire to contribute to a safer digital world and am always eager to learn about emerging threats and defense mechanisms.
+                        </p>
+                        <p>
+                            I believe in a proactive approach to security and aim to leverage my skills to identify vulnerabilities, mitigate risks, and build resilient systems.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-16 md:py-24">
+            <div class="container mx-auto px-4 bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-md p-8 rounded-lg shadow-lg border border-gray-700">
+                <h2 class="text-4xl font-bold text-center mb-12 text-gradient-purple-blue">My Skills</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Skill Card -->
+                    <div class="card p-6 rounded-lg text-center flex flex-col justify-between">
+                        <div>
+                            <i class="fas fa-network-wired text-5xl text-blue-400 mb-4"></i>
+                            <h3 class="text-2xl font-semibold mb-3 text-gray-100">Network Security</h3>
+                            <p class="text-gray-400 mb-4">Firewalls, IDS/IPS, VPNs, Network Segmentation, Protocol Analysis.</p>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2.5 mb-4">
+                            <div class="bg-blue-500 h-2.5 rounded-full" style="width: 90%;"></div>
+                        </div>
+                        <button onclick="showExplanation('Network Security', 'skill')" class="btn-primary text-white font-semibold py-2 px-4 rounded-full text-sm mt-2">
+                            Explain this ✨
+                        </button>
+                    </div>
+                    <!-- Skill Card -->
+                    <div class="card p-6 rounded-lg text-center flex flex-col justify-between">
+                        <div>
+                            <i class="fas fa-mask text-5xl text-purple-400 mb-4"></i>
+                            <h3 class="text-2xl font-semibold mb-3 text-gray-100">Ethical Hacking & Pen Testing</h3>
+                            <p class="text-gray-400 mb-4">Vulnerability Assessment, Exploitation, Reconnaissance, Reporting.</p>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2.5 mb-4">
+                            <div class="bg-purple-500 h-2.5 rounded-full" style="width: 85%;"></div>
+                        </div>
+                        <button onclick="showExplanation('Ethical Hacking & Pen Testing', 'skill')" class="btn-primary text-white font-semibold py-2 px-4 rounded-full text-sm mt-2">
+                            Explain this ✨
+                        </button>
+                    </div>
+                    <!-- Skill Card -->
+                    <div class="card p-6 rounded-lg text-center flex flex-col justify-between">
+                        <div>
+                            <i class="fas fa-bug text-5xl text-indigo-400 mb-4"></i>
+                            <h3 class="text-2xl font-semibold mb-3 text-gray-100">Incident Response</h3>
+                            <p class="text-gray-400 mb-4">Detection, Containment, Eradication, Recovery, Post-incident Analysis.</p>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2.5 mb-4">
+                            <div class="bg-indigo-500 h-2.5 rounded-full" style="width: 88%;"></div>
+                        </div>
+                        <button onclick="showExplanation('Incident Response', 'skill')" class="btn-primary text-white font-semibold py-2 px-4 rounded-full text-sm mt-2">
+                            Explain this ✨
+                        </button>
+                    </div>
+                    <!-- Skill Card -->
+                    <div class="card p-6 rounded-lg text-center flex flex-col justify-between">
+                        <div>
+                            <i class="fas fa-terminal text-5xl text-green-400 mb-4"></i>
+                            <h3 class="text-2xl font-semibold mb-3 text-gray-100">Programming (Python, Bash)</h3>
+                            <p class="text-gray-400 mb-4">Scripting for automation, tool development, data analysis.</p>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2.5 mb-4">
+                            <div class="bg-green-500 h-2.5 rounded-full" style="width: 80%;"></div>
+                        </div>
+                        <button onclick="showExplanation('Programming (Python, Bash)', 'skill')" class="btn-primary text-white font-semibold py-2 px-4 rounded-full text-sm mt-2">
+                            Explain this ✨
+                        </button>
+                    </div>
+                    <!-- Skill Card -->
+                    <div class="card p-6 rounded-lg text-center flex flex-col justify-between">
+                        <div>
+                            <i class="fas fa-lock text-5xl text-yellow-400 mb-4"></i>
+                            <h3 class="text-2xl font-semibold mb-3 text-gray-100">Cryptography</h3>
+                            <p class="text-gray-400 mb-4">Encryption, Hashing, Digital Signatures, PKI concepts.</p>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2.5 mb-4">
+                            <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 75%;"></div>
+                        </div>
+                        <button onclick="showExplanation('Cryptography', 'skill')" class="btn-primary text-white font-semibold py-2 px-4 rounded-full text-sm mt-2">
+                            Explain this ✨
+                        </button>
+                    </div>
+                    <!-- Skill Card -->
+                    <div class="card p-6 rounded-lg text-center flex flex-col justify-between">
+                        <div>
+                            <i class="fas fa-cloud text-5xl text-sky-400 mb-4"></i>
+                            <h3 class="text-2xl font-semibold mb-3 text-gray-100">Cloud Security Basics</h3>
+                            <p class="text-gray-400 mb-4">Understanding cloud service models, security best practices (AWS/Azure).</p>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2.5 mb-4">
+                            <div class="bg-sky-500 h-2.5 rounded-full" style="width: 70%;"></div>
+                        </div>
+                        <button onclick="showExplanation('Cloud Security Basics', 'skill')" class="btn-primary text-white font-semibold py-2 px-4 rounded-full text-sm mt-2">
+                            Explain this ✨
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <section id="certifications" class="py-16 md:py-24">
+            <div class="container mx-auto px-4 bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-md p-8 rounded-lg shadow-lg border border-gray-700">
+                <h2 class="text-4xl font-bold text-center mb-12 text-gradient-purple-blue">Certifications</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Certification Card 1: Google Cybersecurity Professional Certificate -->
+                    <div class="card p-6 rounded-lg flex items-start space-x-4">
+                        <i class="fas fa-globe text-4xl text-purple-400 mt-1"></i>
+                        <div class="flex-grow">
+                            <h3 class="text-2xl font-semibold mb-2 text-gray-100">Google Cybersecurity Professional Certificate</h3>
+                            <p class="text-gray-400 mb-2">Comprehensive training in cybersecurity fundamentals, including threat detection, incident response, and network security.</p>
+                            <p class="text-gray-500 text-sm mb-4">Issued: <span class="font-medium text-gray-400">Date/Ongoing</span></p>
+                            <button onclick="showExplanation('Google Cybersecurity Professional Certificate', 'certification')" class="btn-primary text-white font-semibold py-2 px-4 rounded-full text-sm">
+                                Explain this ✨
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Certification Card 2: Internshala Trainings Ethical Hacking -->
+                    <div class="card p-6 rounded-lg flex items-start space-x-4">
+                        <i class="fas fa-user-secret text-4xl text-blue-400 mt-1"></i>
+                        <div class="flex-grow">
+                            <h3 class="text-2xl font-semibold mb-2 text-gray-100">Internshala Trainings Ethical Hacking</h3>
+                            <p class="text-gray-400 mb-2">Practical training in ethical hacking techniques, penetration testing, and security assessment methodologies.</p>
+                            <p class="text-gray-500 text-sm mb-4">Issued: <span class="font-medium text-gray-400">Date/Ongoing</span></p>
+                            <button onclick="showExplanation('Internshala Trainings Ethical Hacking', 'certification')" class="btn-primary text-white font-semibold py-2 px-4 rounded-full text-sm">
+                                Explain this ✨
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Certification Card 3: Harvard CS50x -->
+                    <div class="card p-6 rounded-lg flex items-start space-x-4">
+                        <i class="fas fa-laptop-code text-4xl text-indigo-400 mt-1"></i>
+                        <div class="flex-grow">
+                            <h3 class="text-2xl font-semibold mb-2 text-gray-100">Harvard CS50x</h3>
+                            <p class="text-gray-400 mb-2">Introduction to the intellectual enterprises of computer science and the art of programming, building a strong foundation.</p>
+                            <p class="text-gray-500 text-sm mb-4">Issued: <span class="font-medium text-gray-400">Date/Completed</span></p>
+                            <button onclick="showExplanation('Harvard CS50x', 'certification')" class="btn-primary text-white font-semibold py-2 px-4 rounded-full text-sm">
+                                Explain this ✨
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Certification Card 4: Cisco Networking Beginners -->
+                    <div class="card p-6 rounded-lg flex items-start space-x-4">
+                        <i class="fas fa-sitemap text-4xl text-gray-400 mt-1"></i>
+                        <div class="flex-grow">
+                            <h3 class="text-2xl font-semibold mb-2 text-gray-100">Cisco Networking Beginners</h3>
+                            <p class="text-gray-400 mb-2">Foundational knowledge in networking concepts, protocols, and basic Cisco device configuration.</p>
+                            <p class="text-gray-500 text-sm mb-4">Issued: <span class="font-medium text-gray-400">Date/Completed</span></p>
+                            <button onclick="showExplanation('Cisco Networking Beginners', 'certification')" class="btn-primary text-white font-semibold py-2 px-4 rounded-full text-sm">
+                                Explain this ✨
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-16 md:py-24">
+            <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-center mb-12 text-gradient-purple-blue">Get In Touch</h2>
+                <div class="max-w-xl mx-auto bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-md p-8 rounded-lg shadow-xl border border-gray-700">
+                    <p class="text-lg text-gray-300 text-center mb-8">
+                        Feel free to reach out to me for collaborations, inquiries, or just to say hello!
+                    </p>
+                    <form onsubmit="handleFormSubmit(event)">
+                        <div class="mb-6">
+                            <label for="name" class="block text-gray-400 text-sm font-bold mb-2">Name</label>
+                            <input type="text" id="name" name="name" class="shadow appearance-none border border-gray-700 rounded-md w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-purple-600 bg-gray-700" placeholder="Your Name" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="email" class="block text-gray-400 text-sm font-bold mb-2">Email</label>
+                            <input type="email" id="email" name="email" class="shadow appearance-none border border-gray-700 rounded-md w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-purple-600 bg-gray-700" placeholder="thotabharadwaj09@gmail.com" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-400 text-sm font-bold mb-2">Message</label>
+                            <textarea id="message" name="message" rows="6" class="shadow appearance-none border border-gray-700 rounded-md w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-purple-600 bg-gray-700" placeholder="Your message..." required></textarea>
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <button type="submit" class="btn-primary text-white font-semibold py-3 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:shadow-outline">
+                                Send Message <i class="fas fa-paper-plane ml-2"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <!-- Success/Error Message Box -->
+                    <div id="message-box" class="mt-6 p-4 rounded-md text-center hidden"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-md py-8 mt-auto">
+        <div class="container mx-auto text-center px-4">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="https://www.linkedin.com/in/thotabharadwaj" target="_blank" class="text-gray-400 hover:text-purple-400 transition-colors duration-300 text-2xl" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/thotabharadwaj" target="_blank" class="text-gray-400 hover:text-purple-400 transition-colors duration-300 text-2xl" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="mailto:thotabharadwaj09@gmail.com" class="text-gray-400 hover:text-purple-400 transition-colors duration-300 text-2xl" aria-label="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+            <p class="text-gray-500">&copy; 2024 Thota Bharadwaj. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Gemini API Explanation Modal -->
+    <div id="explanation-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close-button" onclick="closeModal()">&times;</button>
+            <h3 id="modal-title" class="text-2xl font-bold text-gradient-purple-blue mb-4"></h3>
+            <div id="modal-body" class="text-gray-300">
+                <!-- Content will be loaded here -->
+            </div>
+            <div id="modal-loading" class="hidden flex justify-center items-center h-20">
+                <div class="loading-spinner"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const closeMobileMenuButton = document.getElementById('close-mobile-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden');
+        });
+
+        closeMobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+
+        // Form submission handler
+        function handleFormSubmit(event) {
+            event.preventDefault(); // Prevent default form submission
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            const messageBox = document.getElementById('message-box');
+
+            // In a real application, you would send this data to a backend server.
+            // For this example, we'll just simulate a successful submission.
+            console.log("Form Submitted:", { name, email, message });
+
+            messageBox.classList.remove('hidden', 'bg-red-500', 'text-red-100');
+            messageBox.classList.add('bg-green-500', 'text-green-100');
+            messageBox.textContent = 'Message sent successfully! Thank you for reaching out.';
+
+            // Optionally clear the form after successful submission
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('message').value = '';
+
+            setTimeout(() => {
+                messageBox.classList.add('hidden');
+            }, 5000); // Hide message after 5 seconds
+        }
+
+        // Gemini API Integration for explanations
+        const explanationModal = document.getElementById('explanation-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        const modalLoading = document.getElementById('modal-loading');
+
+        function showModal() {
+            explanationModal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            explanationModal.classList.add('hidden');
+            modalBody.innerHTML = ''; // Clear content
+            modalTitle.textContent = ''; // Clear title
+        }
+
+        async function showExplanation(itemName, type) {
+            showModal();
+            modalTitle.textContent = `Explaining: ${itemName}`;
+            modalBody.innerHTML = '';
+            modalLoading.classList.remove('hidden');
+
+            let prompt = '';
+            if (type === 'skill') {
+                prompt = `Explain the cybersecurity skill '${itemName}' in a concise, professional manner, highlighting its importance in the field. Keep it under 80 words.`;
+            } else if (type === 'certification') {
+                prompt = `Provide a brief professional insight into the '${itemName}' certification, explaining what it covers and its relevance in cybersecurity. Keep it under 80 words.`;
+            }
+
+            try {
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // Canvas will automatically provide this in runtime
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    modalBody.textContent = text;
+                } else {
+                    modalBody.textContent = 'Could not generate explanation. Please try again.';
+                }
+            } catch (error) {
+                console.error('Error calling Gemini API:', error);
+                modalBody.textContent = `Error: ${error.message}. Failed to fetch explanation.`;
+            } finally {
+                modalLoading.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
